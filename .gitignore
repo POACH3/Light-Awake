@@ -1,0 +1,20 @@
+# Compiled files
+*.hex
+*.elf
+*.bin
+*.o
+*.d
+
+# Build folders (Arduino CLI / PlatformIO / others)
+build/
+.pio/
+.pioenvs/
+.vscode/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Arduino IDE backups
+*.cpp.bak
+*.ino.bak
