@@ -1,5 +1,5 @@
 /*
-  Light-based alarm clock with a motion activated night light.
+  Light-based alarm clock with a motion activated nightlight.
 */
 
 #include <Wire.h>
@@ -19,12 +19,14 @@ const int motionPin = 6;
 DateTime now;
 DateTime alarmTimer;
 DateTime motionTimer;
-int alarmHour = 5;
-int alarmMinute = 30;
-int nightlightBeginHour = 22;
+int alarmHour = 5;            // the hour that alarm lighting activates
+int alarmMinute = 30;         // the minute that alarm lighting activates
+int timerMinutes = 20;        // the number of minutes the alarm light stays on
 bool alarmTriggered = false;
+
+int nightlightBeginHour = 22; // the hour that motion lighting can be activated
 bool motion = false;
-int timerMinutes = 20;
+
 
 void setup() {
   Serial.begin(9600);
@@ -94,6 +96,9 @@ void loop() {
   }
 }
 
+/*
+Turn on alarm lighting.
+*/
 void sunrise() {
   SoftPWMSetPercent(whitePin, 50);
   SoftPWMSetPercent(redPin, 0);
@@ -105,6 +110,9 @@ void sunrise() {
   SoftPWMSetPercent(bluePin, 100);
 }
 
+/*
+Turn off alarm lighting.
+*/
 void sunset() {
   SoftPWMSetPercent(whitePin, 0);
   SoftPWMSetPercent(redPin, 0);
@@ -112,16 +120,18 @@ void sunset() {
   SoftPWMSetPercent(bluePin, 0);
 }
 
+/*
+Turn on night time lighting.
+*/
 void nightLight() {
   SoftPWMSetPercent(redPin, 40);
 }
 
+/*
+Returns the time the number of seconds given from now.
+*/
 DateTime setTimer(int seconds) {
   uint32_t unixTime = now.unixtime();
   uint32_t unixAlarmTime = unixTime + seconds;
   return DateTime(unixAlarmTime);
-}
-
-void timeUp() {
-
 }
