@@ -19,12 +19,13 @@ const int motionPin = 6;
 DateTime now;
 DateTime alarmTimer;
 DateTime motionTimer;
-int alarmHour = 5;            // the hour that alarm lighting activates
-int alarmMinute = 30;         // the minute that alarm lighting activates
-int timerMinutes = 20;        // the number of minutes the alarm light stays on
+int alarmHour = 6;               // the hour that alarm lighting activates
+int alarmMinute = 30;            // the minute that alarm lighting activates
+int alarmTimerMinutes = 30;      // the number of minutes the alarm light stays on
 bool alarmTriggered = false;
 
-int nightlightBeginHour = 22; // the hour that motion lighting can be activated
+int nightlightBeginHour = 22;    // the hour that motion lighting can be activated
+int nightlightTimerSeconds = 30; // the number of seconds the nightlight stays on
 bool motion = false;
 
 
@@ -65,7 +66,7 @@ void loop() {
   if (now.hour() == alarmHour && now.minute() == alarmMinute && !alarmTriggered) {
     alarmTriggered = true;
     sunrise();
-    alarmTimer = setTimer(timerMinutes * 60);
+    alarmTimer = setTimer(alarmTimerMinutes * 60);
   }
 
   if (now.hour() == alarmTimer.hour() && now.minute() == alarmTimer.minute()) {
@@ -85,9 +86,9 @@ void loop() {
   delay(100); // debounce the sensor
 
   if (motion && !alarmTriggered) {
-    if ( (now.hour() > nightlightBeginHour) && (now.hour() < alarmHour) && (now.minute() < alarmMinute) ) {
+    if ( isInNightlightWindow(now) ) {
       nightLight();
-      motionTimer = setTimer(30);
+      motionTimer = setTimer(nightlightTimerSeconds);
     }
   }
 
@@ -134,4 +135,19 @@ DateTime setTimer(int seconds) {
   uint32_t unixTime = now.unixtime();
   uint32_t unixAlarmTime = unixTime + seconds;
   return DateTime(unixAlarmTime);
+}
+
+/*
+Checks if a time is within the nightlight window.
+*/
+bool isInNightlightWindow(DateTime now) {
+  int current = now.hour() * 60 + now.minute();
+  int windowBegin = nightlightBeginHour * 60;
+  int windowEnd = alarmHour * 60 + alarmMinute;
+  
+  if (windowBegin < windowEnd) {
+    return current >= windowBegin && current < windowEnd; // no midnight wrap
+  } else {
+    return current >= windowBegin || current < windowEnd; // wraps past midnight
+  }
 }
