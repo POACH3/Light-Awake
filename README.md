@@ -32,10 +32,10 @@ No unit testing has been done, but it functionally works in the real world.
 
 1. Set the clock time by uncommenting line 41 in the code.
 2. Set parameters in the code (lines 22-28):
-  - alarm time (hour and minute) start
-  - alarm time duration (number of minutes of alarm lighting)
-  - night light time (hour and minute) start
-  - night light duration (number of seconds until lighting fades away)
+   - alarm time (hour and minute) start
+   - alarm time duration (number of minutes of alarm lighting)
+   - night light time (hour and minute) start
+   - night light duration (number of seconds until lighting fades away)
 
 NOTE: The night light will be triggered only during hours from the night light start time until the alarm time.
 
@@ -45,5 +45,5 @@ NOTE: The night light will be triggered only during hours from the night light s
 **Author:** T. Stratton  
 **Start Date:** 10-JAN-2025  
 **License:** MIT License – see [LICENSE](./LICENSE)  
-**Language:** Arduino 
+**Language:** Arduino  
 **Status:** Beta (manually tested and working reliably)  
